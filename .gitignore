@@ -1,0 +1,5 @@
+Makefile
+*~
+*.o
+src/local-config.pri
+./.idea
