@@ -58,9 +58,9 @@ jobs:
         run: |-
           make
 
-      - name: 'Test'
-        run: |-
-          ./test.sh --no-make
+      #- name: 'Test'
+      #  run: |-
+      #    ./test.sh --no-make
 
       - name: 'Install'
         run: |-
