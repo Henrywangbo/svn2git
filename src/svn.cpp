@@ -1,4 +1,4 @@
-/*
+﻿/*
  *  Copyright (C) 2007  Thiago Macieira <thiago@kde.org>
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -54,6 +54,15 @@
 
 #if SVN_VER_MAJOR == 1 && SVN_VER_MINOR < 9
 #define svn_stream_read_full svn_stream_read
+#endif
+
+#include <cstdio>
+#include <cstring>
+
+#ifdef _WIN32
+#define strptime(date, format, tm) sscanf(date, "%4d-%2d-%2dT%2d:%2d:%2d", \
+    &((tm)->tm_year), &((tm)->tm_mon), &((tm)->tm_mday), &((tm)->tm_hour), &((tm)->tm_min), &((tm)->tm_sec))
+#define timegm _mkgmtime
 #endif
 
 typedef QList<Rules::Match> MatchRuleList;
@@ -319,12 +328,23 @@ static bool wasDir(svn_fs_t *fs, int revnum, const char *pathname, apr_pool_t *p
     return is_dir;
 }
 
-time_t get_epoch(const char* svn_date)
-{
-    struct tm tm;
-    memset(&tm, 0, sizeof tm);
-    QByteArray date(svn_date, strlen(svn_date) - 8);
-    strptime(date, "%Y-%m-%dT%H:%M:%S", &tm);
+time_t get_epoch(const char* svn_date) {
+    struct tm tm = { 0 };
+    tm.tm_sec = 0;
+    tm.tm_min = 0;
+    tm.tm_hour = 0;
+    tm.tm_mday = 0;
+    tm.tm_mon = 0;
+    tm.tm_year = 0;
+    tm.tm_wday = 0;
+    tm.tm_yday = 0;
+    tm.tm_isdst = 0;
+
+    sscanf(svn_date, "%4d-%2d-%2dT%2d:%2d:%2d",
+        &tm.tm_year, &tm.tm_mon, &tm.tm_mday,
+        &tm.tm_hour, &tm.tm_min, &tm.tm_sec);
+    tm.tm_year -= 1900;
+    tm.tm_mon -= 1;
     return timegm(&tm);
 }
 

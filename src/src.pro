@@ -29,7 +29,8 @@ QT = core
 
 INCLUDEPATH += . $$SVN_INCLUDE $$APR_INCLUDE
 !isEmpty(SVN_LIBDIR): LIBS += -L$$SVN_LIBDIR
-LIBS += -lsvn_fs-1 -lsvn_repos-1 -lapr-1 -lsvn_subr-1
+LIBS += -L/usr/lib -lsvn_fs-1 -lsvn_repos-1 -lsvn_subr-1 \
+        -L/mingw64/lib -lapr-1 -laprutil-1
 
 # Input
 SOURCES += ruleparser.cpp \
