@@ -56,15 +56,25 @@ jobs:
         run: |-
           make
 
-      #- name: 'Test'
-      #  run: |-
-      #    ./test.sh --no-make
+      # - name: 'Test'
+      #   run: |-
+      #     ./test.sh --no-make
 
-      - name: 'Install'
-        run: |-
+      # - name: 'Install'
+      #   run: |-
+      #     set -e
+      #     make INSTALL_ROOT="${PWD}"/ROOT install
+      #     find ROOT | sort
+      - name: Build and Install
+        run: |
           set -e
-          make INSTALL_ROOT="${PWD}"/ROOT install
-          find ROOT | sort
+          cd src/ && ( test -e Makefile || /usr/lib/qt5/bin/qmake -o Makefile /home/runner/work/svn2git/svn2git/src/src.pro ) && make -f Makefile install
+    
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: svn-all-fast-export
+          path: ROOT/usr/local/bin/svn-all-fast-export
 
   docker:
     name: Check Dockerfile
