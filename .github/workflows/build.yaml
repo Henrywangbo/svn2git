@@ -71,7 +71,7 @@ jobs:
           cd src/ && ( test -e Makefile || /usr/lib/qt5/bin/qmake -o Makefile /home/runner/work/svn2git/svn2git/src/src.pro ) && make -f Makefile install
     
       - name: Upload Artifact
-        uses: actions/upload-artifact@v3.1.1
+        uses: actions/upload-artifact@v4
         with:
           name: svn-all-fast-export
           path: ROOT/usr/local/bin/svn-all-fast-export
