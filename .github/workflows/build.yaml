@@ -28,8 +28,6 @@ jobs:
         include:
           - runs-on: ubuntu-22.04
             qt: qt5-qmake
-          - runs-on: ubuntu-18.04
-            qt: qt5-default
 
     name: Build (Linux, ${{ matrix.runs-on }})
     runs-on: ${{ matrix.runs-on }}
