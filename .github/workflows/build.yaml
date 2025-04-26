@@ -60,6 +60,7 @@ jobs:
 
       - name: 'Test'
         run: |-
+          chmod +x ./test.sh
           ./test.sh --no-make
 
       - name: 'Install'
